@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login/Cadastro | HORÁRIO</title>
+    <title>HORÁRIO</title>
+    <script>
+        // Remove a barra final se existir (ex: "horario.site/" → "horario.site")
+        if (window.location.href.endsWith('/') && window.location.pathname === '/') {
+            history.replaceState(null, null, window.location.href.slice(0, -1));
+        }
+        // Força HTTPS (caso alguém acesse via http://)
+        if (location.protocol !== 'https:') {
+            location.replace(`https:${location.href.substring(location.protocol.length)}`);
+        }
+    </script>
     <style>
         * {
             margin: 0;
@@ -45,6 +55,7 @@
             text-decoration: none;
             font-size: 16px;
             transition: color 0.3s;
+            cursor: pointer;
         }
         
         nav ul li a:hover {
@@ -60,53 +71,6 @@
         .login-btn:hover {
             background-color: #45a049;
         }
-
-        /* Estilos do formulário */
-        .login-container {
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .login-container h2 {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .login-container input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .login-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .login-container button:hover {
-            background-color: #45a049;
-        }
-        
-        .toggle-form {
-            text-align: center;
-            margin-top: 15px;
-        }
-        
-        .toggle-form a {
-            color: #4CAF50;
-            text-decoration: none;
-        }
     </style>
 </head>
 <body>
@@ -119,48 +83,8 @@
             </ul>
         </nav>
     </header>
-
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="email" placeholder="E-mail" required>
-            <input type="password" placeholder="Senha" required>
-            <button type="submit">Entrar</button>
-        </form>
-        
-        <div class="toggle-form">
-            <p>Não tem uma conta? <a href="#" id="showRegister">Cadastre-se</a></p>
-        </div>
-    </div>
-
-    <div class="login-container" id="registerForm" style="display: none;">
-        <h2>Cadastro</h2>
-        <form>
-            <input type="text" placeholder="Nome completo" required>
-            <input type="email" placeholder="E-mail" required>
-            <input type="password" placeholder="Senha" required>
-            <input type="password" placeholder="Confirme sua senha" required>
-            <button type="submit">Criar conta</button>
-        </form>
-        
-        <div class="toggle-form">
-            <p>Já tem uma conta? <a href="#" id="showLogin">Faça login</a></p>
-        </div>
-    </div>
-
-    <script>
-        // Alternar entre Login e Cadastro
-        document.getElementById('showRegister').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'block';
-        });
-        
-        document.getElementById('showLogin').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('registerForm').style.display = 'none';
-        });
-    </script>
+    
+    <!-- Conteúdo principal do seu site pode ser adicionado aqui -->
+    
 </body>
 </html>
