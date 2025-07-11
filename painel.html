@@ -102,6 +102,13 @@
             border-radius: 4px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #555;
         }
         
         /* Estilos do calendário */
@@ -176,37 +183,6 @@
             background: #f8f8f8;
         }
         
-        /* Ajustes para visualização de dia */
-        .fc-agendaDay-view .fc-time-grid-container {
-            height: auto !important;
-            max-height: none !important;
-        }
-        
-        .fc-agendaDay-view .fc-slats tr {
-            height: 40px;
-        }
-        
-        /* Estilos para a visualização diária */
-        .fc-time-grid .fc-slats tr {
-            height: 30px !important;
-        }
-        
-        .fc-time-grid .fc-slats .fc-minor {
-            border-top-style: none !important;
-        }
-        
-        .fc-time-grid-container {
-            background: white !important;
-        }
-        
-        .fc-time {
-            font-size: 0.85em !important;
-        }
-        
-        .fc-axis {
-            width: 40px !important;
-        }
-        
         /* ESTILOS DAS OUTRAS ABAS */
         .configuracoes-form {
             background-color: white;
@@ -254,12 +230,21 @@
         }
         
         #voltar-mes {
-            margin-bottom: 10px;
-            padding: 5px 10px;
+            margin-bottom: 20px;
+            padding: 8px 16px;
             background: #f5f5f5;
             border: 1px solid #ddd;
-            border-radius: 3px;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 14px;
+            align-self: flex-start;
+        }
+        
+        .day-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
         }
     </style>
 </head>
@@ -369,97 +354,62 @@
         // CALENDÁRIO COM AS MODIFICAÇÕES SOLICITADAS
         $(document).ready(function() {
             const calendar = $('#calendar');
+            let calendarInitialized = false;
             
-            calendar.fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaDay'
-                },
-                defaultView: 'month',
-                locale: 'pt-br',
-                navLinks: true,
-                selectable: true,
-                selectHelper: false,
-                editable: false,
-                eventLimit: false,
-                height: 600,
-                aspectRatio: 1.8,
-                events: [],
-                dayRender: function(date, cell) {
-                    if (date.day() === 0 || date.day() === 6) {
-                        cell.css('background-color', '#f9f9f9');
-                    }
-                },
-                dayClick: function(date, jsEvent, view) {
-                    // Permite clicar mas não faz nada
-                },
-                viewRender: function(view, element) {
-                    $('.fc-view-container').css('padding', '0');
-                    $('.fc-widget-header').css('border', 'none');
-                    
-                    // Visualização de dia dividida
-                    if (view.name === 'agendaDay') {
-                        calendar.html(`
-                            <div class="day-split-container">
-                                <div class="day-calendar-side">
+            function initCalendar() {
+                calendar.fullCalendar({
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,agendaDay'
+                    },
+                    defaultView: 'month',
+                    locale: 'pt-br',
+                    navLinks: true,
+                    selectable: true,
+                    selectHelper: false,
+                    editable: false,
+                    eventLimit: false,
+                    height: 600,
+                    aspectRatio: 1.8,
+                    events: [],
+                    dayRender: function(date, cell) {
+                        if (date.day() === 0 || date.day() === 6) {
+                            cell.css('background-color', '#f9f9f9');
+                        }
+                    },
+                    dayClick: function(date, jsEvent, view) {
+                        // Permite clicar mas não faz nada
+                    },
+                    viewRender: function(view, element) {
+                        if (view.name === 'agendaDay') {
+                            const dateStr = view.intervalStart.format('DD/MM/YYYY');
+                            calendar.html(`
+                                <div style="margin-bottom: 20px;">
                                     <button id="voltar-mes">← Voltar para o Mês</button>
-                                    <div id="day-calendar-am"></div>
+                                    <div class="day-title">LISTA DO DIA - ${dateStr}</div>
                                 </div>
-                                <div class="day-calendar-side">
-                                    <div style="margin-bottom: 10px; visibility: hidden;">← Voltar para o Mês</div>
-                                    <div id="day-calendar-pm"></div>
+                                <div class="day-split-container">
+                                    <div class="day-calendar-side">
+                                        LISTA DO DIA (MANHÃ)
+                                    </div>
+                                    <div class="day-calendar-side">
+                                        LISTA DO DIA (TARDE)
+                                    </div>
                                 </div>
-                            </div>
-                        `);
-                        
-                        // Botão para voltar ao mês
-                        $('#voltar-mes').click(function() {
-                            calendar.fullCalendar('changeView', 'month');
-                        });
-                        
-                        // Configurações comuns para ambos os calendários
-                        const commonDayConfig = {
-                            defaultView: 'agendaDay',
-                            header: false,
-                            locale: 'pt-br',
-                            allDaySlot: false,
-                            slotDuration: '00:30:00',
-                            defaultDate: view.intervalStart,
-                            height: 'parent',
-                            contentHeight: 'auto',
-                            events: [],
-                            nowIndicator: false,
-                            slotEventOverlap: false,
-                            slotLabelFormat: 'H:mm',
-                            slotLabelInterval: '01:00:00'
-                        };
-                        
-                        // Calendário da manhã (00:00 - 12:30)
-                        $('#day-calendar-am').fullCalendar({
-                            ...commonDayConfig,
-                            minTime: '00:00:00',
-                            maxTime: '12:30:00',
-                            scrollTime: '00:00:00'
-                        });
-                        
-                        // Calendário da tarde (13:00 - 23:30)
-                        $('#day-calendar-pm').fullCalendar({
-                            ...commonDayConfig,
-                            minTime: '13:00:00',
-                            maxTime: '23:30:00',
-                            scrollTime: '13:00:00'
-                        });
-                        
-                        // Ajustes visuais para os slots
-                        setTimeout(() => {
-                            $('.fc-slats tr').css('height', '30px');
-                            $('.fc-time-grid .fc-slats .fc-minor').css('border-top-style', 'none');
-                            $('.fc-time-grid-container').css('background', 'white');
-                        }, 100);
+                            `);
+                            
+                            // Botão para voltar ao mês
+                            $('#voltar-mes').click(function() {
+                                calendar.fullCalendar('changeView', 'month');
+                            });
+                        }
                     }
-                }
-            });
+                });
+                calendarInitialized = true;
+            }
+            
+            initCalendar();
         });
 
         // Botão Cancelar Assinatura
