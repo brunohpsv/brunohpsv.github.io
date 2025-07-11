@@ -116,6 +116,7 @@
             padding: 20px;
             border-radius: 8px;
             text-align: center;
+            margin-bottom: 20px;
         }
         
         .plano-preco {
@@ -129,32 +130,6 @@
             font-size: 14px;
             color: #666;
             margin-bottom: 20px;
-        }
-        
-        .plano-aceite {
-            margin-top: 15px;
-            text-align: left;
-            padding: 0 10px;
-        }
-        
-        .plano-aceite label {
-            display: flex;
-            align-items: flex-start;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        
-        .plano-aceite input[type="checkbox"] {
-            width: auto;
-            margin-right: 10px;
-            margin-top: 3px;
-        }
-        
-        .boleto-info {
-            display: block;
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
         }
         
         .termos {
@@ -208,7 +183,81 @@
         <div class="form-container">
             <h1>Cadastro de Usuário</h1>
             <form id="formCadastro">
-                <!-- Seus campos de formulário aqui (mantenha como estava) -->
+                <div class="form-group">
+                    <label for="tipo-pessoa">Tipo de Pessoa</label>
+                    <select id="tipo-pessoa" required>
+                        <option value="">Selecione...</option>
+                        <option value="pf">Pessoa Física (CPF)</option>
+                        <option value="pj">Pessoa Jurídica (CNPJ)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="identificacao" id="label-identificacao">CPF/CNPJ</label>
+                    <input type="text" id="identificacao" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="endereco">Endereço</label>
+                    <input type="text" id="endereco" placeholder="Rua" required>
+                </div>
+                
+                <div class="form-group">
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex: 3;">
+                            <label for="bairro">Bairro/Setor</label>
+                            <input type="text" id="bairro" required>
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="numero">Número</label>
+                            <input type="text" id="numero" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex: 2;">
+                            <label for="cidade">Cidade</label>
+                            <input type="text" id="cidade" required>
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="estado">Estado</label>
+                            <input type="text" id="estado" required>
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="cep">CEP</label>
+                            <input type="text" id="cep" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telefone">Telefone/Celular do Responsável</label>
+                    <input type="tel" id="telefone" placeholder="(XX) XXXXX-XXXX" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="documento">Documento de Identificação</label>
+                    <input type="file" id="documento" required>
+                    <small>Envie Identidade, CNH ou Cartão CNPJ (PDF ou imagem)</small>
+                </div>
+                
+                <div class="termos">
+                    <input type="checkbox" id="concordo" required>
+                    <label for="concordo">Concordo com os <a href="#">termos</a> adotados para utilização dessa plataforma, respeitando todos os direitos do site</label>
+                </div>
+                
+                <button type="submit" class="btn-enviar">Enviar Cadastro</button>
+                
+                <div id="mensagemSucesso" class="mensagem-sucesso">
+                    Seu cadastro está em análise, por 24h. Neste período a nossa equipe entrará em contato para efetivar seu cadastro.
+                </div>
             </form>
         </div>
         
@@ -220,17 +269,54 @@
                 <div class="plano-descricao">
                     Acesso completo à plataforma com todos os recursos disponíveis para seu negócio.
                 </div>
-                <div class="plano-aceite">
-                    <input type="checkbox" id="plano" name="plano" required>
-                    <label for="plano">
-                        Aceito o plano de R$ 30,00/mês
-                        <span class="boleto-info">Boletos serão enviados por e-mail todo dia 10 de cada mês</span>
-                    </label>
-                </div>
+                <input type="checkbox" id="plano" checked disabled>
+                <label for="plano">Selecionado</label>
             </div>
         </div>
     </div>
 
-    <!-- Seus scripts JavaScript aqui (mantenha como estava) -->
+    <script>
+        // Alternar entre CPF e CNPJ
+        document.getElementById('tipo-pessoa').addEventListener('change', function() {
+            const label = document.getElementById('label-identificacao');
+            if (this.value === 'pj') {
+                label.textContent = 'CNPJ';
+            } else {
+                label.textContent = 'CPF';
+            }
+        });
+
+        // Envio do formulário
+        document.getElementById('formCadastro').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simulação de envio (substitua por código real de envio para email)
+            setTimeout(() => {
+                document.getElementById('mensagemSucesso').style.display = 'block';
+                this.reset();
+                window.scrollTo(0, document.body.scrollHeight);
+            }, 1000);
+        });
+
+        // Máscaras para os campos
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 2) {
+                value = `(${value.substring(0,2)}) ${value.substring(2)}`;
+            }
+            if (value.length > 10) {
+                value = `${value.substring(0,10)}-${value.substring(10,14)}`;
+            }
+            e.target.value = value;
+        });
+
+        document.getElementById('cep').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 5) {
+                value = `${value.substring(0,5)}-${value.substring(5,8)}`;
+            }
+            e.target.value = value;
+        });
+    </script>
 </body>
 </html>
