@@ -337,74 +337,69 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale/pt-br.js'></script>
     
     <script>
-    // Sistema de abas
-    document.querySelectorAll('.tab-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const tabId = this.getAttribute('data-tab');
-            
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
+        // Sistema de abas
+        document.querySelectorAll('.tab-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tabId = this.getAttribute('data-tab');
+                
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                
+                document.getElementById(tabId).classList.add('active');
             });
-            
-            document.getElementById(tabId).classList.add('active');
         });
-    });
         
         // CALENDÁRIO COM AS MODIFICAÇÕES SOLICITADAS
-    $(document).ready(function() {
-        // Inicializa o calendário principal
-        const calendar = $('#calendar').fullCalendar({
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,agendaDay'
-            },
-            defaultView: 'month',
-            locale: 'pt-br',
-            navLinks: true,
-            selectable: true,
-            selectHelper: false,
-            editable: false,
-            eventLimit: false,
-            height: 600,
-            aspectRatio: 1.8,
-            events: [],
-            dayRender: function(date, cell) {
-                if (date.day() === 0 || date.day() === 6) {
-                    cell.css('background-color', '#f9f9f9');
-                }
-            },
-            viewRender: function(view, element) {
-                if (view.name === 'agendaDay') {
-                    const dateStr = view.intervalStart.format('DD/MM/YYYY');
-                    $('#calendar').html(`
-                        <div style="margin-bottom: 20px;">
-                            <button id="voltar-mes">← Voltar para o Mês</button>
-                            <div class="day-title">LISTA DO DIA - ${dateStr}</div>
-                        </div>
-                        <div class="day-split-container">
-                            <div class="day-calendar-side">
-                                LISTA DO DIA (MANHÃ)
+        $(document).ready(function() {
+            // Inicializa o calendário principal
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaDay'
+                },
+                defaultView: 'month',
+                locale: 'pt-br',
+                navLinks: true,
+                selectable: true,
+                selectHelper: false,
+                editable: false,
+                eventLimit: false,
+                height: 600,
+                aspectRatio: 1.8,
+                events: [],
+                dayRender: function(date, cell) {
+                    if (date.day() === 0 || date.day() === 6) {
+                        cell.css('background-color', '#f9f9f9');
+                    }
+                },
+                viewRender: function(view, element) {
+                    if (view.name === 'agendaDay') {
+                        const dateStr = view.intervalStart.format('DD/MM/YYYY');
+                        $('#calendar').html(`
+                            <div style="margin-bottom: 20px;">
+                                <button id="voltar-mes">← Voltar para o Mês</button>
+                                <div class="day-title">LISTA DO DIA - ${dateStr}</div>
                             </div>
-                            <div class="day-calendar-side">
-                                LISTA DO DIA (TARDE)
+                            <div class="day-split-container">
+                                <div class="day-calendar-side">
+                                    LISTA DO DIA (MANHÃ)
+                                </div>
+                                <div class="day-calendar-side">
+                                    LISTA DO DIA (TARDE)
+                                </div>
                             </div>
-                        </div>
-                    `);
-                            
-                            // Botão para voltar ao mês - CORREÇÃO AQUI
-                    $('#voltar-mes').click(function() {
-                        $('#calendar').fullCalendar('changeView', 'month');
-                    });
+                        `);
+                        
+                        // Botão para voltar ao mês
+                        $('#voltar-mes').click(function() {
+                            $('#calendar').fullCalendar('changeView', 'month');
+                        });
+                    }
                 }
-            }
-        });
-    });
-                calendarInitialized = true;
-            }
-            
-            initCalendar();
+            });
         });
 
         // Botão Cancelar Assinatura
