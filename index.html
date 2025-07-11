@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HORÁRIO</title>
+    <script>
+        // Remove a barra final se existir (ex: "horario.site/" → "horario.site")
+        if (window.location.href.endsWith('/') && window.location.pathname === '/') {
+            history.replaceState(null, null, window.location.href.slice(0, -1));
+        }
+    </script>
     <style>
         * {
             margin: 0;
@@ -68,18 +74,17 @@
         <div class="logo">HORÁRIO</div>
         <nav>
             <ul>
-                <li><a href="/">Início</a></li>
+                <li><a href="https://horario.site">Início</a></li>
                 <li><a href="javascript:void(0)" class="login-btn" id="loginBtn">Login/Cadastro</a></li>
             </ul>
         </nav>
     </header>
 
     <script>
-        // Remove completamente o comportamento de link
-        document.getElementById('loginBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            // Aqui você pode adicionar a lógica para abrir o modal de login
-            console.log('Abrir modal de login aqui');
+        // Lógica para o botão de Login (opcional)
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            alert('Aqui você pode abrir um formulário de login!');
+            // Substitua por um modal ou redirecionamento real depois
         });
     </script>
 </body>
