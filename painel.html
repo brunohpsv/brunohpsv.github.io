@@ -63,7 +63,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 100%; /* Alterado para 100% */
             margin: 0 auto;
             padding: 10px 20px;
         }
@@ -104,14 +104,25 @@
         
         .fc-day {
             min-height: 60px;
+            cursor: pointer;
         }
         
+        .fc-day:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .fc-day.fc-state-highlight {
+            background-color: #e6f7ff;
+        }
+
         /* ESTILOS DAS OUTRAS ABAS */
         .configuracoes-form {
             background-color: white;
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
         .form-group {
@@ -265,17 +276,24 @@
                 defaultView: 'month',
                 locale: 'pt-br',
                 navLinks: true,
-                selectable: false,  // Desativa seleção de dias
+                selectable: true,  // Permite seleção de dias
+                selectHelper: false, // Remove o highlight de seleção
                 editable: false,
                 eventLimit: false,
                 height: 'parent',
                 contentHeight: 'auto',
-                aspectRatio: 1.5,
+                aspectRatio: 1.8,  // Proporção mais larga
                 events: [],
                 dayRender: function(date, cell) {
                     if (date.day() === 0 || date.day() === 6) {
                         cell.css('background-color', '#f9f9f9');
                     }
+                },
+                select: function(startDate, endDate) {
+                    // Ação vazia - permite selecionar mas não faz nada
+                },
+                dayClick: function(date, jsEvent, view) {
+                    // Ação vazia - permite clicar mas não mostra alerta
                 },
                 viewRender: function(view, element) {
                     $('.fc-view-container').css('padding', '0');
