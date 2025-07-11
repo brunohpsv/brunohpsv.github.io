@@ -5,16 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HORÁRIO</title>
     <script>
+        // Remove a barra final se existir (ex: "horario.site/" → "horario.site")
         if (window.location.href.endsWith('/') && window.location.pathname === '/') {
             history.replaceState(null, null, window.location.href.slice(0, -1));
         }
+        // Força HTTPS (caso alguém acesse via http://)
         if (location.protocol !== 'https:') {
             location.replace(`https:${location.href.substring(location.protocol.length)}`);
         }
     </script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background-color: #f5f5f5; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
         header {
             background-color: #000000;
             color: white;
@@ -23,22 +34,43 @@
             justify-content: space-between;
             align-items: center;
         }
-        .logo { font-size: 24px; font-weight: bold; letter-spacing: 1px; }
-        nav ul { display: flex; list-style: none; }
-        nav ul li { margin-left: 30px; }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
         nav ul li a {
             color: white;
             text-decoration: none;
             font-size: 16px;
             transition: color 0.3s;
+            cursor: pointer;
         }
-        nav ul li a:hover { color: #cccccc; }
+        
+        nav ul li a:hover {
+            color: #cccccc;
+        }
+        
         .login-btn {
             background-color: #4CAF50;
             padding: 8px 16px;
             border-radius: 4px;
         }
-        .login-btn:hover { background-color: #45a049; }
+        
+        .login-btn:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -47,9 +79,12 @@
         <nav>
             <ul>
                 <li><a href="https://horario.site">Início</a></li>
-                <li><a href="/login" class="login-btn">Login/Cadastro</a></li>
+                <li><a href="https://horario.site/login.html" class="login-btn">Login/Cadastro</a></li>
             </ul>
         </nav>
     </header>
+    
+    <!-- Conteúdo principal do seu site pode ser adicionado aqui -->
+    
 </body>
 </html>
