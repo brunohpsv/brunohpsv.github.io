@@ -45,6 +45,7 @@
             text-decoration: none;
             font-size: 16px;
             transition: color 0.3s;
+            cursor: pointer;
         }
         
         nav ul li a:hover {
@@ -67,13 +68,19 @@
         <div class="logo">HORÁRIO</div>
         <nav>
             <ul>
-                <li><a href="#">Início</a></li>
-                <li><a href="#" class="login-btn">Login/Cadastro</a></li>
+                <li><a href="/">Início</a></li>
+                <li><a href="javascript:void(0)" class="login-btn" id="loginBtn">Login/Cadastro</a></li>
             </ul>
         </nav>
     </header>
-    
-    <!-- O restante do conteúdo do seu site virá aqui -->
-    
+
+    <script>
+        // Remove completamente o comportamento de link
+        document.getElementById('loginBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Aqui você pode adicionar a lógica para abrir o modal de login
+            console.log('Abrir modal de login aqui');
+        });
+    </script>
 </body>
 </html>
