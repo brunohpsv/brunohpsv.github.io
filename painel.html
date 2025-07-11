@@ -76,13 +76,13 @@
             display: block;
         }
         
-        /* ESTILO ATUALIZADO DO CALENDÁRIO */
+        /* ESTILO ATUALIZADO DO CALENDÁRIO - MAIOR */
         #calendar {
             background-color: white;
             border-radius: 4px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             width: 100%;
-            height: 450px; /* Altura reduzida */
+            height: 600px; /* Altura aumentada */
             margin-top: 0;
             border: 1px solid #e0e0e0;
         }
@@ -92,11 +92,16 @@
             display: flex;
             width: 100%;
             height: calc(100vh - 180px);
+            gap: 10px;
         }
         
         .day-calendar-side {
             flex: 1;
             min-width: 0;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 10px;
         }
         
         /* Estilos do calendário */
@@ -149,7 +154,7 @@
         
         .fc-day {
             border-color: #f0f0f0;
-            min-height: 70px; /* Ajustado para altura reduzida */
+            min-height: 70px;
         }
         
         .fc-day-number {
@@ -348,7 +353,7 @@
                 selectHelper: false,
                 editable: false,
                 eventLimit: false,
-                height: 450, // Altura reduzida
+                height: 600, // Altura aumentada
                 aspectRatio: 1.8,
                 events: [],
                 dayRender: function(date, cell) {
@@ -368,24 +373,44 @@
                         calendar.html(`
                             <div class="day-split-container">
                                 <div class="day-calendar-side">
-                                    <div id="day-calendar"></div>
+                                    <div id="day-calendar-am"></div>
+                                </div>
+                                <div class="day-calendar-side">
+                                    <div id="day-calendar-pm"></div>
                                 </div>
                             </div>
                         `);
                         
-                        $('#day-calendar').fullCalendar({
+                        // Calendário da manhã (00:00 - 12:30)
+                        $('#day-calendar-am').fullCalendar({
                             defaultView: 'agendaDay',
                             header: false,
                             locale: 'pt-br',
                             allDaySlot: false,
                             minTime: '00:00:00',
-                            maxTime: '24:00:00',
-                            slotDuration: '01:00:00',
+                            maxTime: '12:30:00',
+                            slotDuration: '00:30:00',
                             defaultDate: view.intervalStart,
                             height: 'parent',
                             contentHeight: 'auto',
                             events: [],
                             scrollTime: '00:00:00'
+                        });
+                        
+                        // Calendário da tarde (13:00 - 23:30)
+                        $('#day-calendar-pm').fullCalendar({
+                            defaultView: 'agendaDay',
+                            header: false,
+                            locale: 'pt-br',
+                            allDaySlot: false,
+                            minTime: '13:00:00',
+                            maxTime: '23:30:00',
+                            slotDuration: '00:30:00',
+                            defaultDate: view.intervalStart,
+                            height: 'parent',
+                            contentHeight: 'auto',
+                            events: [],
+                            scrollTime: '13:00:00'
                         });
                     }
                 }
