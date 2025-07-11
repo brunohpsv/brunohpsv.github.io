@@ -121,7 +121,7 @@
             font-weight: bold;
         }
 
-        /* Mensagens de erro (opcional) */
+        /* Mensagens de erro */
         .error-message {
             color: #d32f2f;
             font-size: 14px;
@@ -145,8 +145,8 @@
         <div class="auth-container" id="loginForm">
             <h2>Login</h2>
             <form id="loginForm">
-                <input type="email" placeholder="E-mail" required>
-                <div class="error-message" id="emailError"></div>
+                <input type="text" placeholder="CNPJ/CPF" required>
+                <div class="error-message" id="cnpjError"></div>
                 
                 <input type="password" placeholder="Senha" required>
                 <div class="error-message" id="passwordError"></div>
@@ -161,7 +161,7 @@
     </div>
 
     <script>
-        // Validação básica do formulário
+        // Validação do formulário
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -170,13 +170,14 @@
                 el.style.display = 'none';
             });
             
-            // Validação simples (pode ser expandida)
-            const email = this.querySelector('input[type="email"]').value;
+            // Validação
+            const cnpjCpf = this.querySelector('input[type="text"]').value;
             const password = this.querySelector('input[type="password"]').value;
             
-            if (!email.includes('@')) {
-                document.getElementById('emailError').textContent = 'E-mail inválido';
-                document.getElementById('emailError').style.display = 'block';
+            // Validação básica de CNPJ/CPF (pode ser melhorada)
+            if (cnpjCpf.length < 11) {
+                document.getElementById('cnpjError').textContent = 'CNPJ/CPF inválido';
+                document.getElementById('cnpjError').style.display = 'block';
                 return;
             }
             
@@ -186,9 +187,31 @@
                 return;
             }
             
-            // Se a validação passar, pode enviar o formulário
-            alert('Login realizado com sucesso!');
-            // window.location.href = 'painel.html'; // Redirecionar após login
+            // Credenciais fixas para teste (substitua por verificação real)
+            if (cnpjCpf === '12.123.123/1234-12' && password === 'senha123') {
+                window.location.href = 'https://horario.site/painel.html';
+            } else {
+                document.getElementById('passwordError').textContent = 'CNPJ/CPF ou senha incorretos';
+                document.getElementById('passwordError').style.display = 'block';
+            }
+        });
+
+        // Máscara para CNPJ/CPF (opcional)
+        document.querySelector('input[type="text"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            if (value.length <= 11) { // CPF
+                if (value.length > 3) value = value.replace(/^(\d{3})(\d)/g, '$1.$2');
+                if (value.length > 6) value = value.replace(/^(\d{3})\.(\d{3})(\d)/g, '$1.$2.$3');
+                if (value.length > 9) value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/g, '$1.$2.$3-$4');
+            } else { // CNPJ
+                if (value.length > 2) value = value.replace(/^(\d{2})(\d)/g, '$1.$2');
+                if (value.length > 5) value = value.replace(/^(\d{2})\.(\d{3})(\d)/g, '$1.$2.$3');
+                if (value.length > 8) value = value.replace(/^(\d{2})\.(\d{3})\.(\d{3})(\d)/g, '$1.$2.$3/$4');
+                if (value.length > 12) value = value.replace(/^(\d{2})\.(\d{3})\.(\d{3})\/(\d{4})(\d)/g, '$1.$2.$3/$4-$5');
+            }
+            
+            e.target.value = value;
         });
     </script>
 </body>
