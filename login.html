@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login/Cadastro | HORÁRIO</title>
+    <title>Login | HORÁRIO</title>
     <style>
         * {
             margin: 0;
@@ -61,51 +61,72 @@
             background-color: #45a049;
         }
 
-        /* Estilos do formulário */
-        .login-container {
-            max-width: 400px;
+        /* Container principal */
+        .main-container {
+            max-width: 1200px;
             margin: 50px auto;
-            padding: 20px;
+            padding: 0 20px;
+        }
+
+        /* Estilos dos formulários */
+        .auth-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 30px;
             background: white;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         
-        .login-container h2 {
+        .auth-container h2 {
             margin-bottom: 20px;
             text-align: center;
+            color: #333;
         }
         
-        .login-container input {
+        .auth-container input {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
+            padding: 12px;
+            margin: 8px 0;
             border: 1px solid #ddd;
             border-radius: 4px;
+            font-size: 16px;
         }
         
-        .login-container button {
+        .auth-container button {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
         }
         
-        .login-container button:hover {
+        .auth-container button:hover {
             background-color: #45a049;
         }
         
         .toggle-form {
             text-align: center;
-            margin-top: 15px;
+            margin-top: 20px;
+            font-size: 14px;
         }
         
         .toggle-form a {
             color: #4CAF50;
             text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Mensagens de erro (opcional) */
+        .error-message {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
         }
     </style>
 </head>
@@ -120,46 +141,54 @@
         </nav>
     </header>
 
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="email" placeholder="E-mail" required>
-            <input type="password" placeholder="Senha" required>
-            <button type="submit">Entrar</button>
-        </form>
-        
-        <div class="toggle-form">
-            <p>Não tem uma conta? <a href="#" id="showRegister">Cadastre-se</a></p>
-        </div>
-    </div>
-
-    <div class="login-container" id="registerForm" style="display: none;">
-        <h2>Cadastro</h2>
-        <form>
-            <input type="text" placeholder="Nome completo" required>
-            <input type="email" placeholder="E-mail" required>
-            <input type="password" placeholder="Senha" required>
-            <input type="password" placeholder="Confirme sua senha" required>
-            <button type="submit">Criar conta</button>
-        </form>
-        
-        <div class="toggle-form">
-            <p>Já tem uma conta? <a href="#" id="showLogin">Faça login</a></p>
+    <div class="main-container">
+        <div class="auth-container" id="loginForm">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="email" placeholder="E-mail" required>
+                <div class="error-message" id="emailError"></div>
+                
+                <input type="password" placeholder="Senha" required>
+                <div class="error-message" id="passwordError"></div>
+                
+                <button type="submit">Entrar</button>
+            </form>
+            
+            <div class="toggle-form">
+                <p>Não tem uma conta? <a href="https://horario.site/cadastro.html" id="showRegister">Cadastre-se</a></p>
+            </div>
         </div>
     </div>
 
     <script>
-        // Alternar entre Login e Cadastro
-        document.getElementById('showRegister').addEventListener('click', function(e) {
+        // Validação básica do formulário
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'block';
-        });
-        
-        document.getElementById('showLogin').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('registerForm').style.display = 'none';
+            
+            // Limpa mensagens de erro
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Validação simples (pode ser expandida)
+            const email = this.querySelector('input[type="email"]').value;
+            const password = this.querySelector('input[type="password"]').value;
+            
+            if (!email.includes('@')) {
+                document.getElementById('emailError').textContent = 'E-mail inválido';
+                document.getElementById('emailError').style.display = 'block';
+                return;
+            }
+            
+            if (password.length < 6) {
+                document.getElementById('passwordError').textContent = 'Senha deve ter pelo menos 6 caracteres';
+                document.getElementById('passwordError').style.display = 'block';
+                return;
+            }
+            
+            // Se a validação passar, pode enviar o formulário
+            alert('Login realizado com sucesso!');
+            // window.location.href = 'painel.html'; // Redirecionar após login
         });
     </script>
 </body>
