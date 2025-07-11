@@ -393,9 +393,9 @@
                             </div>
                         `);
                         
-                        // Botão para voltar ao mês
+                        // Botão para voltar ao mês - AGORA RECARREGA A PÁGINA
                         $('#voltar-mes').click(function() {
-                            $('#calendar').fullCalendar('changeView', 'month');
+                            location.reload();
                         });
                     }
                 }
