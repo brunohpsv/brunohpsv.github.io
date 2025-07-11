@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login/Cadastro | HORÁRIO</title>
+    <title>Cadastro | HORÁRIO</title>
     <style>
         * {
             margin: 0;
@@ -14,6 +14,7 @@
         
         body {
             background-color: #f5f5f5;
+            color: #333;
         }
         
         header {
@@ -57,55 +58,113 @@
             border-radius: 4px;
         }
         
-        .login-btn:hover {
-            background-color: #45a049;
-        }
-
-        /* Estilos do formulário */
-        .login-container {
-            max-width: 400px;
-            margin: 50px auto;
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
             padding: 20px;
+            display: flex;
+            gap: 30px;
+        }
+        
+        .form-container {
+            flex: 2;
             background: white;
+            padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         
-        .login-container h2 {
+        .plano-container {
+            flex: 1;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+        
+        h1 {
             margin-bottom: 20px;
-            text-align: center;
+            color: #333;
         }
         
-        .login-container input {
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="file"],
+        select,
+        textarea {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 4px;
+            font-size: 16px;
         }
         
-        .login-container button {
-            width: 100%;
-            padding: 10px;
+        .plano-box {
+            border: 2px solid #4CAF50;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .plano-preco {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin: 10px 0;
+        }
+        
+        .plano-descricao {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .termos {
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        .termos a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        
+        .btn-enviar {
             background-color: #4CAF50;
             color: white;
             border: none;
+            padding: 12px 20px;
+            font-size: 16px;
             border-radius: 4px;
             cursor: pointer;
+            width: 100%;
         }
         
-        .login-container button:hover {
+        .btn-enviar:hover {
             background-color: #45a049;
         }
         
-        .toggle-form {
+        .mensagem-sucesso {
+            display: none;
+            background: #dff0d8;
+            color: #3c763d;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
             text-align: center;
-            margin-top: 15px;
-        }
-        
-        .toggle-form a {
-            color: #4CAF50;
-            text-decoration: none;
         }
     </style>
 </head>
@@ -114,52 +173,153 @@
         <div class="logo">HORÁRIO</div>
         <nav>
             <ul>
+                <li><a href="https://horario.site">Início</a></li>
                 <li><a href="https://horario.site/login.html" class="login-btn">Login/Cadastro</a></li>
             </ul>
         </nav>
     </header>
 
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="email" placeholder="E-mail" required>
-            <input type="password" placeholder="Senha" required>
-            <button type="submit">Entrar</button>
-        </form>
+    <div class="container">
+        <div class="form-container">
+            <h1>Cadastro de Usuário</h1>
+            <form id="formCadastro">
+                <div class="form-group">
+                    <label for="tipo-pessoa">Tipo de Pessoa</label>
+                    <select id="tipo-pessoa" required>
+                        <option value="">Selecione...</option>
+                        <option value="pf">Pessoa Física (CPF)</option>
+                        <option value="pj">Pessoa Jurídica (CNPJ)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="identificacao" id="label-identificacao">CPF/CNPJ</label>
+                    <input type="text" id="identificacao" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="endereco">Endereço</label>
+                    <input type="text" id="endereco" placeholder="Rua" required>
+                </div>
+                
+                <div class="form-group">
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex: 3;">
+                            <label for="bairro">Bairro/Setor</label>
+                            <input type="text" id="bairro" required>
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="numero">Número</label>
+                            <input type="text" id="numero" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex: 2;">
+                            <label for="cidade">Cidade</label>
+                            <input type="text" id="cidade" required>
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="estado">Estado</label>
+                            <input type="text" id="estado" required>
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="cep">CEP</label>
+                            <input type="text" id="cep" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telefone">Telefone/Celular do Responsável</label>
+                    <input type="tel" id="telefone" placeholder="(XX) XXXXX-XXXX" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="documento">Documento de Identificação</label>
+                    <input type="file" id="documento" required>
+                    <small>Envie Identidade, CNH ou Cartão CNPJ (PDF ou imagem)</small>
+                </div>
+                
+                <div class="termos">
+                    <input type="checkbox" id="concordo" required>
+                    <label for="concordo">Concordo com os <a href="#">termos</a> adotados para utilização dessa plataforma, respeitando todos os direitos do site</label>
+                </div>
+                
+                <button type="submit" class="btn-enviar">Enviar Cadastro</button>
+                
+                <div id="mensagemSucesso" class="mensagem-sucesso">
+                    Seu cadastro está em análise, por 24h. Neste período a nossa equipe entrará em contato para efetivar seu cadastro.
+                </div>
+            </form>
+        </div>
         
-        <div class="toggle-form">
-            <p>Não tem uma conta? <a href="#" id="showRegister">Cadastre-se</a></p>
-            <a href="https://horario.site/cadastro.html" id="showRegister">Cadastre-se</a>
+        <div class="plano-container">
+    <h2>Plano de Assinatura</h2>
+    <div class="plano-box">
+        <h3>Plano Básico</h3>
+        <div class="plano-preco">R$ 30,00/mês</div>
+        <div class="plano-descricao">
+            Acesso completo à plataforma com todos os recursos disponíveis para seu negócio.
+        </div>
+        <div style="display: flex; align-items: center; margin-top: 15px;">
+            <input type="checkbox" id="plano" name="plano" required>
+            <label for="plano" style="margin-left: 10px;">
+                Aceito o plano de R$ 30,00/mês<br>
+                <small style="font-size: 12px; color: #666;">Boletos serão enviados por e-mail todo dia 10 de cada mês</small>
+            </label>
         </div>
     </div>
-
-    <div class="login-container" id="registerForm" style="display: none;">
-        <h2>Cadastro</h2>
-        <form>
-            <input type="text" placeholder="Nome completo" required>
-            <input type="email" placeholder="E-mail" required>
-            <input type="password" placeholder="Senha" required>
-            <input type="password" placeholder="Confirme sua senha" required>
-            <button type="submit">Criar conta</button>
-        </form>
-        
-        <div class="toggle-form">
-            <p>Já tem uma conta? <a href="#" id="showLogin">Faça login</a></p>
-        </div>
-    </div>
+</div>
 
     <script>
-        // Alternar entre Login e Cadastro
-        document.getElementById('showRegister').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'block';
+        // Alternar entre CPF e CNPJ
+        document.getElementById('tipo-pessoa').addEventListener('change', function() {
+            const label = document.getElementById('label-identificacao');
+            if (this.value === 'pj') {
+                label.textContent = 'CNPJ';
+            } else {
+                label.textContent = 'CPF';
+            }
         });
-        
-        document.getElementById('showLogin').addEventListener('click', function(e) {
+
+        // Envio do formulário
+        document.getElementById('formCadastro').addEventListener('submit', function(e) {
             e.preventDefault();
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('registerForm').style.display = 'none';
+            
+            // Simulação de envio (substitua por código real de envio para email)
+            setTimeout(() => {
+                document.getElementById('mensagemSucesso').style.display = 'block';
+                this.reset();
+                window.scrollTo(0, document.body.scrollHeight);
+            }, 1000);
+        });
+
+        // Máscaras para os campos
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 2) {
+                value = `(${value.substring(0,2)}) ${value.substring(2)}`;
+            }
+            if (value.length > 10) {
+                value = `${value.substring(0,10)}-${value.substring(10,14)}`;
+            }
+            e.target.value = value;
+        });
+
+        document.getElementById('cep').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 5) {
+                value = `${value.substring(0,5)}-${value.substring(5,8)}`;
+            }
+            e.target.value = value;
         });
     </script>
 </body>
