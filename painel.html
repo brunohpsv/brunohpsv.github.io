@@ -82,7 +82,7 @@
             border-radius: 4px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             width: 100%;
-            height: 600px; /* Altura aumentada */
+            height: 600px;
             margin-top: 0;
             border: 1px solid #e0e0e0;
         }
@@ -185,7 +185,8 @@
         .fc-agendaDay-view .fc-slats tr {
             height: 40px;
         }
-         /* Adicione ao seu CSS existente */
+        
+        /* Estilos para a visualização diária */
         .fc-time-grid .fc-slats tr {
             height: 30px !important;
         }
@@ -250,6 +251,15 @@
         
         .btn-cancelar:hover {
             background-color: #d32f2f;
+        }
+        
+        #voltar-mes {
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -373,7 +383,7 @@
                 selectHelper: false,
                 editable: false,
                 eventLimit: false,
-                height: 600, // Altura aumentada
+                height: 600,
                 aspectRatio: 1.8,
                 events: [],
                 dayRender: function(date, cell) {
@@ -384,70 +394,73 @@
                 dayClick: function(date, jsEvent, view) {
                     // Permite clicar mas não faz nada
                 },
-                // Substitua a função viewRender no código do calendário por esta versão atualizada
-viewRender: function(view, element) {
-    $('.fc-view-container').css('padding', '0');
-    $('.fc-widget-header').css('border', 'none');
-    
-    // Visualização de dia dividida
-    if (view.name === 'agendaDay') {
-        calendar.html(`
-            <div class="day-split-container">
-                <div class="day-calendar-side">
-                    <button id="voltar-mes" style="margin-bottom: 10px; padding: 5px 10px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 3px; cursor: pointer;">← Voltar para o Mês</button>
-                    <div id="day-calendar-am"></div>
-                </div>
-                <div class="day-calendar-side">
-                    <div style="margin-bottom: 10px; visibility: hidden;">← Voltar para o Mês</div>
-                    <div id="day-calendar-pm"></div>
-                </div>
-            </div>
-        `);
-        
-        // Botão para voltar ao mês
-        $('#voltar-mes').click(function() {
-            calendar.fullCalendar('changeView', 'month');
+                viewRender: function(view, element) {
+                    $('.fc-view-container').css('padding', '0');
+                    $('.fc-widget-header').css('border', 'none');
+                    
+                    // Visualização de dia dividida
+                    if (view.name === 'agendaDay') {
+                        calendar.html(`
+                            <div class="day-split-container">
+                                <div class="day-calendar-side">
+                                    <button id="voltar-mes">← Voltar para o Mês</button>
+                                    <div id="day-calendar-am"></div>
+                                </div>
+                                <div class="day-calendar-side">
+                                    <div style="margin-bottom: 10px; visibility: hidden;">← Voltar para o Mês</div>
+                                    <div id="day-calendar-pm"></div>
+                                </div>
+                            </div>
+                        `);
+                        
+                        // Botão para voltar ao mês
+                        $('#voltar-mes').click(function() {
+                            calendar.fullCalendar('changeView', 'month');
+                        });
+                        
+                        // Configurações comuns para ambos os calendários
+                        const commonDayConfig = {
+                            defaultView: 'agendaDay',
+                            header: false,
+                            locale: 'pt-br',
+                            allDaySlot: false,
+                            slotDuration: '00:30:00',
+                            defaultDate: view.intervalStart,
+                            height: 'parent',
+                            contentHeight: 'auto',
+                            events: [],
+                            nowIndicator: false,
+                            slotEventOverlap: false,
+                            slotLabelFormat: 'H:mm',
+                            slotLabelInterval: '01:00:00'
+                        };
+                        
+                        // Calendário da manhã (00:00 - 12:30)
+                        $('#day-calendar-am').fullCalendar({
+                            ...commonDayConfig,
+                            minTime: '00:00:00',
+                            maxTime: '12:30:00',
+                            scrollTime: '00:00:00'
+                        });
+                        
+                        // Calendário da tarde (13:00 - 23:30)
+                        $('#day-calendar-pm').fullCalendar({
+                            ...commonDayConfig,
+                            minTime: '13:00:00',
+                            maxTime: '23:30:00',
+                            scrollTime: '13:00:00'
+                        });
+                        
+                        // Ajustes visuais para os slots
+                        setTimeout(() => {
+                            $('.fc-slats tr').css('height', '30px');
+                            $('.fc-time-grid .fc-slats .fc-minor').css('border-top-style', 'none');
+                            $('.fc-time-grid-container').css('background', 'white');
+                        }, 100);
+                    }
+                }
+            });
         });
-        
-        // Configurações comuns para ambos os calendários
-        const commonDayConfig = {
-            defaultView: 'agendaDay',
-            header: false,
-            locale: 'pt-br',
-            allDaySlot: false,
-            slotDuration: '00:30:00',
-            defaultDate: view.intervalStart,
-            height: 'parent',
-            contentHeight: 'auto',
-            events: [],
-            nowIndicator: false,
-            slotEventOverlap: false,
-            slotLabelFormat: 'H:mm',
-            slotLabelInterval: '01:00:00'
-        };
-        
-        // Calendário da manhã (00:00 - 12:30)
-        $('#day-calendar-am').fullCalendar({
-            ...commonDayConfig,
-            minTime: '00:00:00',
-            maxTime: '12:30:00',
-            scrollTime: '00:00:00'
-        });
-        
-        // Calendário da tarde (13:00 - 23:30)
-        $('#day-calendar-pm').fullCalendar({
-            ...commonDayConfig,
-            minTime: '13:00:00',
-            maxTime: '23:30:00',
-            scrollTime: '13:00:00'
-        });
-        
-        // Ajustes visuais para os slots
-        $('.fc-slats tr').css('height', '30px'); // Reduz altura das linhas
-        $('.fc-time-grid .fc-slats .fc-minor').css('border-top-style', 'none'); // Remove bordas menores
-        $('.fc-time-grid-container').css('background', 'white'); // Remove fundo sombreado
-    }
-}
 
         // Botão Cancelar Assinatura
         document.querySelector('.btn-cancelar').addEventListener('click', function() {
