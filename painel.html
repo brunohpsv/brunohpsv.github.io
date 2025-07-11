@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Controle | HORÁRIO</title>
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' rel='stylesheet' />
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.print.min.css' rel='stylesheet' media='print' />
     <style>
         * {
             margin: 0;
@@ -65,8 +64,8 @@
         
         .container {
             max-width: 1200px;
-            margin: 30px auto;
-            padding: 20px;
+            margin: 0 auto; /* Removida margem superior */
+            padding: 10px 20px; /* Padding reduzido */
         }
         
         .tab-content {
@@ -77,23 +76,25 @@
             display: block;
         }
         
+        /* ESTILOS ATUALIZADOS DO CALENDÁRIO */
         #calendar {
             background-color: white;
-            padding: 15px;
+            padding: 10px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             width: 100%;
-            height: 500px; /* Altura reduzida */
+            height: 500px;
+            margin-top: 0; /* Remove margem superior */
         }
         
-        /* Estilos específicos do calendário */
-        .fc-toolbar h2 {
-            font-size: 1.3em;
-            margin: 0;
+        .fc-toolbar {
+            margin-bottom: 5px;
+            padding: 5px 0;
         }
         
-        .fc-day-grid-event .fc-content {
-            white-space: normal;
+        .fc-day-header {
+            padding: 5px 0;
+            font-size: 0.9em;
         }
         
         .fc-day-number {
@@ -101,49 +102,16 @@
             padding: 2px;
         }
         
-        .fc-day-header {
-            padding: 5px 0;
-            background-color: #f8f9fa;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-        
         .fc-day {
-            min-height: 50px; /* Altura reduzida das células */
+            min-height: 60px;
+            cursor: pointer; /* Mostra que é clicável */
         }
         
-        .fc-today {
-            background-color: #e6f7ff !important;
+        .fc-content {
+            height: 100%;
         }
         
-        .fc-button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            height: auto;
-            font-size: 0.9em;
-        }
-        
-        .fc-button:hover {
-            background-color: #45a049;
-        }
-        
-        .fc-button-group {
-            display: flex;
-            gap: 5px;
-        }
-        
-        .fc-prev-button, .fc-next-button {
-            background-color: #6c757d;
-        }
-        
-        .fc-prev-button:hover, .fc-next-button:hover {
-            background-color: #5a6268;
-        }
-        
+        /* [Mantendo os estilos existentes das outras abas] */
         .configuracoes-form {
             background-color: white;
             padding: 30px;
@@ -293,28 +261,38 @@
             });
         });
         
-        // Calendário com as modificações solicitadas
+        // CALENDÁRIO COM OS AJUSTES SOLICITADOS
         $(document).ready(function() {
             $('#calendar').fullCalendar({
                 header: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'month,agendaDay' // Mantém apenas mês e dia
+                    right: 'month,agendaDay'
                 },
                 defaultView: 'month',
                 locale: 'pt-br',
                 navLinks: true,
-                editable: false, // Desativa a edição
+                selectable: true,  // Permite seleção de dias
+                selectHelper: true,
+                editable: false,
                 eventLimit: false,
                 height: 'parent',
                 contentHeight: 'auto',
-                aspectRatio: 1.8, // Proporção mais larga
-                events: [], // Sem eventos
+                aspectRatio: 1.5,  // Proporção mais larga
+                events: [],
                 dayRender: function(date, cell) {
-                    // Destacar fins de semana
                     if (date.day() === 0 || date.day() === 6) {
                         cell.css('background-color', '#f9f9f9');
                     }
+                },
+                // Interação com os dias
+                dayClick: function(date, jsEvent, view) {
+                    alert('Dia selecionado: ' + date.format('DD/MM/YYYY'));
+                },
+                // Remove margens extras
+                viewRender: function(view, element) {
+                    $('.fc-view-container').css('padding', '0');
+                    $('.fc-widget-header').css('border', 'none');
                 }
             });
         });
