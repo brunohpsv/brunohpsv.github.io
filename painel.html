@@ -76,17 +76,30 @@
             display: block;
         }
         
-        /* NOVO ESTILO DO CALENDÁRIO - MAIS CHAPADO E CLÁSSICO */
+        /* ESTILO ATUALIZADO DO CALENDÁRIO */
         #calendar {
             background-color: white;
             border-radius: 4px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             width: 100%;
-            height: 600px;
+            height: 450px; /* Altura reduzida */
             margin-top: 0;
             border: 1px solid #e0e0e0;
         }
         
+        /* Layout para visualização de dia dividida */
+        .day-split-container {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 180px);
+        }
+        
+        .day-calendar-side {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        /* Estilos do calendário */
         .fc-toolbar {
             margin-bottom: 10px;
             padding: 10px;
@@ -136,7 +149,7 @@
         
         .fc-day {
             border-color: #f0f0f0;
-            min-height: 80px;
+            min-height: 70px; /* Ajustado para altura reduzida */
         }
         
         .fc-day-number {
@@ -158,21 +171,17 @@
             background: #f8f8f8;
         }
         
-        /* Visualização de dia sem scroll */
-        .fc-agendaDay-view .fc-widget-content {
-            height: auto !important;
-            overflow: visible !important;
-        }
-        
+        /* Ajustes para visualização de dia */
         .fc-agendaDay-view .fc-time-grid-container {
             height: auto !important;
+            max-height: none !important;
         }
         
         .fc-agendaDay-view .fc-slats tr {
             height: 40px;
         }
         
-        /* ESTILOS DAS OUTRAS ABAS (MANTIDOS) */
+        /* ESTILOS DAS OUTRAS ABAS */
         .configuracoes-form {
             background-color: white;
             padding: 30px;
@@ -249,7 +258,54 @@
             <div class="configuracoes-form">
                 <h2>Dados Cadastrais</h2>
                 <form>
-                    <!-- [Mantido o formulário existente] -->
+                    <div class="form-group">
+                        <label for="tipo-pessoa">Tipo de Pessoa</label>
+                        <select id="tipo-pessoa" disabled>
+                            <option value="pj" selected>Pessoa Jurídica (CNPJ)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cnpj">CNPJ</label>
+                        <input type="text" id="cnpj" value="12.123.123/1234-12" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endereco">Endereço</label>
+                        <input type="text" id="endereco" value="Rua Exemplo, 123" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bairro">Bairro/Setor</label>
+                        <input type="text" id="bairro" value="Centro" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cidade">Cidade</label>
+                        <input type="text" id="cidade" value="São Paulo" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <input type="text" id="estado" value="SP" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cep">CEP</label>
+                        <input type="text" id="cep" value="01000-000" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telefone">Telefone/Celular</label>
+                        <input type="tel" id="telefone" value="(11) 99999-9999" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" value="empresa@exemplo.com" disabled>
+                    </div>
+                    
+                    <button type="button" class="btn-cancelar">Cancelar Assinatura</button>
                 </form>
             </div>
         </div>
@@ -275,9 +331,11 @@
             });
         });
         
-        // CALENDÁRIO COM NOVO ESTILO
+        // CALENDÁRIO COM AS MODIFICAÇÕES SOLICITADAS
         $(document).ready(function() {
-            $('#calendar').fullCalendar({
+            const calendar = $('#calendar');
+            
+            calendar.fullCalendar({
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -290,8 +348,7 @@
                 selectHelper: false,
                 editable: false,
                 eventLimit: false,
-                height: 'parent',
-                contentHeight: 'auto',
+                height: 450, // Altura reduzida
                 aspectRatio: 1.8,
                 events: [],
                 dayRender: function(date, cell) {
@@ -306,10 +363,30 @@
                     $('.fc-view-container').css('padding', '0');
                     $('.fc-widget-header').css('border', 'none');
                     
-                    // Ajustes específicos para a visualização de dia
+                    // Visualização de dia dividida
                     if (view.name === 'agendaDay') {
-                        $('.fc-time-grid-container').css('height', 'auto');
-                        $('.fc-slats').css('height', 'auto');
+                        calendar.html(`
+                            <div class="day-split-container">
+                                <div class="day-calendar-side">
+                                    <div id="day-calendar"></div>
+                                </div>
+                            </div>
+                        `);
+                        
+                        $('#day-calendar').fullCalendar({
+                            defaultView: 'agendaDay',
+                            header: false,
+                            locale: 'pt-br',
+                            allDaySlot: false,
+                            minTime: '00:00:00',
+                            maxTime: '24:00:00',
+                            slotDuration: '01:00:00',
+                            defaultDate: view.intervalStart,
+                            height: 'parent',
+                            contentHeight: 'auto',
+                            events: [],
+                            scrollTime: '00:00:00'
+                        });
                     }
                 }
             });
