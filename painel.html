@@ -6,119 +6,266 @@
     <title>Painel de Controle | HORÁRIO</title>
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' rel='stylesheet' />
     <style>
-        /* [Mantendo todos os estilos anteriores] */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
         
-        /* NOVOS ESTILOS PARA O CALENDÁRIO */
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        header {
+            background-color: #000000;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #cccccc;
+        }
+        
+        .logout-btn {
+            background-color: #f44336;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+        
+        .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+        
+        .container {
+            max-width: 100%; /* Alterado para 100% */
+            margin: 0 auto;
+            padding: 10px 20px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* ESTILOS DO CALENDÁRIO */
         #calendar {
             background-color: white;
-            padding: 15px;
+            padding: 10px;
             border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
             width: 100%;
-            height: 550px;
+            height: 500px;
             margin-top: 0;
         }
         
         .fc-toolbar {
-            margin-bottom: 15px;
-            padding: 10px 0;
-            background-color: #f8f9fa;
-            border-radius: 6px;
-            padding: 10px;
-        }
-        
-        .fc-toolbar h2 {
-            font-size: 1.4em;
-            color: #333;
-            margin: 0;
-        }
-        
-        .fc-button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 8px 14px;
-            border-radius: 4px;
-            font-size: 0.9em;
-            transition: all 0.3s;
-        }
-        
-        .fc-button:hover {
-            background-color: #3e8e41;
-            transform: translateY(-1px);
-        }
-        
-        .fc-button-group {
-            gap: 8px;
-        }
-        
-        .fc-prev-button, .fc-next-button {
-            background-color: #6c757d;
-        }
-        
-        .fc-prev-button:hover, .fc-next-button:hover {
-            background-color: #5a6268;
+            margin-bottom: 5px;
+            padding: 5px 0;
         }
         
         .fc-day-header {
-            padding: 8px 0;
-            background-color: #f1f1f1;
-            color: #555;
-            font-weight: 600;
-            border: none;
+            padding: 5px 0;
+            font-size: 0.9em;
         }
         
         .fc-day-number {
-            font-size: 1em;
-            font-weight: bold;
-            color: #333;
-            padding: 5px;
+            font-size: 0.9em;
+            padding: 2px;
         }
         
         .fc-day {
-            min-height: 80px;
-            border: 1px solid #eee;
-            transition: all 0.2s;
+            min-height: 60px;
+            cursor: pointer;
         }
         
         .fc-day:hover {
-            background-color: #f5f5f5;
-            transform: scale(1.02);
-        }
-        
-        .fc-today {
-            background-color: #e6f7ff !important;
-        }
-        
-        .fc-today .fc-day-number {
-            color: #2196F3;
-            font-weight: bold;
+            background-color: #f0f0f0;
         }
         
         .fc-day.fc-state-highlight {
-            background-color: #e3f2fd;
-            box-shadow: inset 0 0 0 2px #2196F3;
+            background-color: #e6f7ff;
+        }
+
+        /* ESTILOS DAS OUTRAS ABAS */
+        .configuracoes-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
-        .fc-day.fc-state-highlight .fc-day-number {
-            color: #2196F3;
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
             font-weight: bold;
         }
         
-        .fc-day.fc-sun, .fc-day.fc-sat {
-            background-color: #f9f9f9;
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
         }
         
-        .fc-day.fc-sun .fc-day-number, .fc-day.fc-sat .fc-day-number {
-            color: #888;
+        .btn-cancelar {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .btn-cancelar:hover {
+            background-color: #d32f2f;
         }
     </style>
 </head>
 <body>
-    <!-- [Mantendo toda a estrutura HTML existente] -->
+    <header>
+        <div class="logo">PAINEL DE CONTROLE</div>
+        <nav>
+            <ul>
+                <li><a href="#" class="tab-link" data-tab="calendario">CALENDÁRIO</a></li>
+                <li><a href="#" class="tab-link" data-tab="relatorio">RELATÓRIO</a></li>
+                <li><a href="#" class="tab-link" data-tab="configuracoes">CONFIGURAÇÕES</a></li>
+                <li><a href="https://horario.site/login.html" class="logout-btn">SAIR</a></li>
+            </ul>
+        </nav>
+    </header>
 
+    <div class="container">
+        <!-- Aba Calendário -->
+        <div id="calendario" class="tab-content active">
+            <div id="calendar"></div>
+        </div>
+        
+        <!-- Aba Relatório -->
+        <div id="relatorio" class="tab-content">
+            <h2>Relatórios</h2>
+            <p>Esta seção será desenvolvida em breve.</p>
+        </div>
+        
+        <!-- Aba Configurações -->
+        <div id="configuracoes" class="tab-content">
+            <div class="configuracoes-form">
+                <h2>Dados Cadastrais</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="tipo-pessoa">Tipo de Pessoa</label>
+                        <select id="tipo-pessoa" disabled>
+                            <option value="pj" selected>Pessoa Jurídica (CNPJ)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cnpj">CNPJ</label>
+                        <input type="text" id="cnpj" value="12.123.123/1234-12" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endereco">Endereço</label>
+                        <input type="text" id="endereco" value="Rua Exemplo, 123" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bairro">Bairro/Setor</label>
+                        <input type="text" id="bairro" value="Centro" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cidade">Cidade</label>
+                        <input type="text" id="cidade" value="São Paulo" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <input type="text" id="estado" value="SP" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cep">CEP</label>
+                        <input type="text" id="cep" value="01000-000" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telefone">Telefone/Celular</label>
+                        <input type="tel" id="telefone" value="(11) 99999-9999" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" value="empresa@exemplo.com" disabled>
+                    </div>
+                    
+                    <button type="button" class="btn-cancelar">Cancelar Assinatura</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale/pt-br.js'></script>
+    
     <script>
-        // CALENDÁRIO - VERSÃO FINAL
+        // Sistema de abas
+        document.querySelectorAll('.tab-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tabId = this.getAttribute('data-tab');
+                
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // CALENDÁRIO - VERSÃO CORRIGIDA
         $(document).ready(function() {
             $('#calendar').fullCalendar({
                 header: {
@@ -129,41 +276,38 @@
                 defaultView: 'month',
                 locale: 'pt-br',
                 navLinks: true,
-                selectable: true,
-                selectHelper: false,
+                selectable: true,  // Permite seleção de dias
+                selectHelper: false, // Remove o highlight de seleção
                 editable: false,
                 eventLimit: false,
                 height: 'parent',
                 contentHeight: 'auto',
-                aspectRatio: 1.8,
+                aspectRatio: 1.8,  // Proporção mais larga
                 events: [],
                 dayRender: function(date, cell) {
-                    // Destacar fins de semana
                     if (date.day() === 0 || date.day() === 6) {
                         cell.css('background-color', '#f9f9f9');
                     }
                 },
+                select: function(startDate, endDate) {
+                    // Ação vazia - permite selecionar mas não faz nada
+                },
                 dayClick: function(date, jsEvent, view) {
-                    // Remove seleção anterior
-                    $('.fc-day').removeClass('fc-state-highlight');
-                    
-                    // Adiciona destaque ao dia clicado
-                    $(this).addClass('fc-state-highlight');
-                    
-                    // Exibe a data selecionada no título (opcional)
-                    $('.fc-toolbar h2').text(date.format('DD/MM/YYYY'));
+                    // Ação vazia - permite clicar mas não mostra alerta
                 },
                 viewRender: function(view, element) {
                     $('.fc-view-container').css('padding', '0');
                     $('.fc-widget-header').css('border', 'none');
-                    
-                    // Restaura o título padrão ao mudar de visualização
-                    $('.fc-toolbar h2').text(view.title);
                 }
             });
         });
 
-        // [Mantendo o restante dos scripts existentes]
+        // Botão Cancelar Assinatura
+        document.querySelector('.btn-cancelar').addEventListener('click', function() {
+            if(confirm('Tem certeza que deseja cancelar sua assinatura?')) {
+                alert('Assinatura cancelada com sucesso. Seu acesso será mantido até o final do período contratado.');
+            }
+        });
     </script>
 </body>
 </html>
